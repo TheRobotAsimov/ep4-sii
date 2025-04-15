@@ -1,7 +1,7 @@
 from PIL import Image
 import os
 
-def reducir_imagenes_en_directorio(directorio, max_lado=1000):
+def reducir_imagenes_en_directorio(directorio, max_lado=500):
     for carpeta, _, archivos in os.walk(directorio):
         for archivo in archivos:
             if archivo.endswith((".jpg", ".jpeg", ".png")):
@@ -17,4 +17,6 @@ def reducir_imagenes_en_directorio(directorio, max_lado=1000):
                     print(f"Error con {ruta}: {e}")
 
 # Llama la función con tu carpeta de imágenes
+reducir_imagenes_en_directorio('D:/bosque/train')
+reducir_imagenes_en_directorio('D:/bosque/test')
 reducir_imagenes_en_directorio('D:/bosque/valid')
