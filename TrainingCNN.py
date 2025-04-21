@@ -1,7 +1,7 @@
 #Mi primera red neuronal convolucional
 #Importar las librerias necesarias
 
-from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from keras import optimizers
 from keras.models import Sequential
 from keras.layers import Dense,Dropout,Flatten,Activation
@@ -11,8 +11,8 @@ import math
 
 #Ruta de las imágenes
 
-entrenamiento = 'D:/bosque/train/'
-validacion = 'D:/bosque/test/'
+entrenamiento = '/home/jorge/Descargas/sistemas/ep4-sii/bosque/train'
+validacion = '/home/jorge/Descargas/sistemas/ep4-sii/bosque/valid'
 
 
 
@@ -54,7 +54,7 @@ CNN.add(Convolution2D(kernels1,kernel1_size,padding="same",input_shape=(altura,a
 CNN.add(MaxPooling2D(pool_size=size_pooling))
 
 #Definir la segunda capa convolucional
-CNN.add(Convolution2D(kernels2, kernel2_size, padding="same", activation="relu"))  # OK sin input_shape
+CNN.add(Convolution2D(kernels2, kernel2_size, padding="same",activation="relu"))  # OK sin input_shape
 CNN.add(MaxPooling2D(pool_size=size_pooling))
 
 #Aplicar flatten
@@ -63,9 +63,14 @@ CNN.add(Flatten())
 #Conectar con un perceptron multicapa (MLP)
 #Primera capa oculta
 CNN.add(Dense(128,activation="relu"))
-#Segunda capa oculta
 #Apagar un % de neuronas
 CNN.add(Dropout(0.5))
+#Segunda capa oculta
+CNN.add(Dense(64,activation="relu"))
+#Apagar un % de neuronas
+CNN.add(Dropout(0.3))
+
+
 #Capa de salida
 CNN.add(Dense(2,activation="softmax"))
 
@@ -75,7 +80,7 @@ CNN.compile(loss="categorical_crossentropy",optimizer="adam",metrics=["acc","mse
 #Entrenar la red neuronal convolucional
 # Definir callbacks
 early_stop = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
-check = ModelCheckpoint("mejor_modelo.h5", save_best_only=True)
+check = ModelCheckpoint("mejor_modelo.keras", save_best_only=True)
 
 # Entrenar con callbacks
 historico = CNN.fit(
@@ -89,5 +94,5 @@ historico = CNN.fit(
 )
 
 # Guardar el modelo entrenado
-CNN.save('modelo_entrenado.h5')
+CNN.save('modelo_entrenado.keras')
 
